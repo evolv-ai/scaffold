@@ -3,7 +3,7 @@ Scaffolding for developing and building an experiment using rollup
 
 
 ## Generating a project
-To start a new project namded `myProject` with the scaffold, use the following command line:
+To start a new project named `myProject` with the scaffold, use the following command line:
 
 ```npx degit git@github.com:evolv-ai/scaffold.git --mode=git myProject```
 
