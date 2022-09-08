@@ -1,0 +1,29 @@
+{
+  "id": "planFork",
+  "name": "plan fork",
+  "contexts":[
+    {
+        "id": "planPage",
+        "display_name": "Plan page",
+        "referenceUrls": [
+          "https://www.verizon.com/digital/nsa/secure/ui/cpc/#/"
+        ],
+        "condition": {
+          "web.url": "digital/nsa/secure/ui/cpc"
+        },
+        "variables": [
+          {
+            "id": "c1",
+            "display_name": "Concept 1",
+            "variants":[
+              {
+                "id": "v1",
+                "display_name": "Variant 1"
+              }
+            ]
+          }
+        ]
+    }
+  ],
+  "baseUrl": "https://www.verizon.com/"
+}

@@ -1,0 +1,32 @@
+{
+  "name": "tnc-cust-desktop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "context.js",
+  "scripts": {
+    "rollup:build": "rollup --config rollup.config.js",
+    "rollup:watch": "rollup --config rollup.config.js --watch",
+    "server:dev": "pushd dist; python3 -m http.server 8080; popd",
+    "yaml:build": "node ./scripts/build_yaml.js",
+    "folder:build": "node ./scripts/build_structure.js",
+    "init:build": "node ./scripts/build_init.js",
+    "start": "npm-run-all -l -p rollup:watch server:dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "nanoid": "^3.3.1",
+    "rollup-plugin-copy-watch": "0.0.1"
+  },
+  "devDependencies": {
+    "base-64": "^1.0.0",
+    "cssnano": "^5.1.12",
+    "http-server": "^14.1.1",
+    "node-sass": "^7.0.1",
+    "npm-run-all": "^4.1.5",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-scss": "^3.0.0",
+    "sass": "^1.54.5"
+  }
+}
