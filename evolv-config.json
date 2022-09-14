@@ -1,10 +1,10 @@
 {
-  "id": "planFork",
-  "name": "plan fork",
+  "id": "change_this_id",
+  "name": "Change this name",
   "contexts":[
     {
-        "id": "planPage",
-        "display_name": "Plan page",
+        "id": "p1",
+        "display_name": "Page 1",
         "referenceUrls": [
           "https://www.verizon.com/digital/nsa/secure/ui/cpc/#/"
         ],
