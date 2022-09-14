@@ -133,7 +133,7 @@ function mergeContext(context, contextId, baseUrl) {
   var cssPath = absolutePath(`${contextPath}.css`);
   var assets = {
     javascript: jsAsset.slice(0, -closingLength) + contextSuffix + jsAsset.slice(-closingLength),
-    css: (fs.existsSync * (cssPath)) ? fs.readFileSync(cssPath, 'utf8') : ''
+    css: (fs.existsSync(cssPath)) ? fs.readFileSync(cssPath, 'utf8') : ''
   }
 
   var newContext = {};
