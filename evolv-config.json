@@ -6,10 +6,10 @@
         "id": "p1",
         "display_name": "Page 1",
         "referenceUrls": [
-          "https://www.verizon.com/digital/nsa/secure/ui/cpc/#/"
+          "https://www.verizon.com/<path>"
         ],
         "condition": {
-          "web.url": "digital/nsa/secure/ui/cpc"
+          "web.url": "<path regex>"
         },
         "variables": [
           {
