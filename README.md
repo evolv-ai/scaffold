@@ -19,7 +19,10 @@ Now you are all ready to develop your project
 
 ## Create your folders with json
 
-To create your folders (and scaffolded files) for the project, edit the `evolv-config.json`
+To create your folders (and scaffolded files) for the project, edit the `evolv-config.json`. 
+
+**Note**: *Make sure you update the experiment id, reference url, and web.url value.*
+
 Once you have your experiment outline specified in the json, run the following to build your folder structure:
 
 ```npm run folder:build```
