@@ -24,3 +24,57 @@ Once you have your experiment outline specified in the json, run the following t
 
 ```npm run folder:build```
 
+## Develop Experiment Code
+
+### Context Guidelines
+
+### Concept Guidelines
+
+### Variant Guidelines
+
+### Examples
+The following experiments are examples of usage:
+- 
+- 
+
+## Start Development Server
+This starts the development server to be served up to the browser.
+```
+npm run server:dev
+```
+
+## Setup Resource Override
+There is a chrome extension in development, but is not ready for use in experiment development yet. So, in the meantime, we need to setup Resource Override to handle loading our harness for execution.
+
+### Install Resource Override
+Install from: https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii?hl=en
+
+### Tab Group
+Add tab group url for 
+#### Add Change Header Rule
+
+#### Add Inject file rule
+
+Add an Inject file to your tab group and use the defaut `head` as the insertion point.
+The following snippet should be used as the content.
+
+```
+var variants = ['planPage/c1/v1'];
+var port = '8080';
+
+var expScript = document.createElement('script');
+expScript.setAttribute('src', `http://localhost:${port}/bootstrap.js`);
+expScript.setAttribute('variants', JSON.stringify(variants));
+expScript.setAttribute('port', port);
+
+document.head.appendChild(expScript);
+```
+
+Note: The variants can be any combination where each variant string is specified by the following `<context id>/<concept id>/<variant id>`.
+
+
+## Build Yaml file
+
+```
+npm run yaml:build
+```
