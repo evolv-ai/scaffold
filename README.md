@@ -27,16 +27,16 @@ Once you have your experiment outline specified in the json, run the following t
 ## Develop Experiment Code
 
 ### Context Guidelines
+tbd
 
 ### Concept Guidelines
+tbd
 
 ### Variant Guidelines
-
+tbd
 ### Examples
-The following experiments are examples of usage:
-- 
-- 
-
+The following experiments are examples of usage
+tbd
 ## Start Development Server
 This starts the development server to be served up to the browser.
 ```
@@ -50,8 +50,13 @@ There is a chrome extension in development, but is not ready for use in experime
 Install from: https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii?hl=en
 
 ### Tab Group
-Add tab group url for 
+Add tab group url for the path you want to load the variants into. You can use either a base url (https://www.verizon.com/**) or a specific path.
+
 #### Add Change Header Rule
+
+Use `Allow Outside Content` from the preset options and it should include two lines with:
+`Remove` `Content-Security-Policy` and
+`Remove` `X-Content-Security-Policy`
 
 #### Add Inject file rule
 
