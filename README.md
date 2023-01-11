@@ -21,6 +21,7 @@ Or, use the following command line for plain version:
 
 ```npx degit git@github.com:evolv-ai/scaffold.git --mode=git myProject```
 
+## Initialize project
 Then got into the folder:
 
 ```cd myProject```
