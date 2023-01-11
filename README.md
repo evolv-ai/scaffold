@@ -68,7 +68,7 @@ There is a chrome extension in development, but is not ready for use in experime
 Install from: https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii?hl=en
 
 ### Tab Group
-Add tab group url for the path you want to load the variants into. You can use either a base url (https://www.verizon.com/**) or a specific path.
+Add tab group url for the path you want to load the variants into. You can use either a base url (https://www.evolv.ai/**) or a specific path.
 
 #### Add Change Header Rule
 
