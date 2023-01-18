@@ -1,0 +1,9 @@
+@use '../utils';
+@use '../___variableId__/__variableId__';
+
+body.evolv-__contextId__-__variableId____variantId__ {
+    @extend %__variableId__;
+
+    .evolv {
+    }
+}

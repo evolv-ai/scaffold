@@ -1,9 +1,10 @@
-import { rule, $, $$ } from './setup.js'
-import "./context.scss";
+import { rule, $, $$, $i, store, app, log } from './_imports/_setup.js';
+import instrumentPage from './_imports/_instrument.js';
+__variantImports__
 
-import { instrumentPage } from './instrumentPage.js';
+// Uncomment the line below in production to enable SPA handling
+// rule.id = '__contextId__';
 
-rule.app = {
-};
+__variantDeclarations__
 
 instrumentPage();

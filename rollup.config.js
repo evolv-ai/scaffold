@@ -1,53 +1,61 @@
-// import copy from 'rollup-plugin-copy';
-import scss from 'rollup-plugin-scss'
+import copy from 'rollup-plugin-copy';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import config from './evolv.config.js';
 
-const evolvConfig = require('./evolv-config.json')
+function buildServeFile(path) {
+    var input = `./src/contexts/${path}`;
+    var output = `./serve/${path}`;
 
-function buildFile(path) {
-  var input = `./src/${path}`;
-  var output = `./dist/${path}`;
+    return {
+        input: `${input}.js`,
+        output: {
+            file: `${output}.js`,
+            format: 'iife',
+        },
+    };
+}
 
-  return {
-    input: `${input}.js`,
+function buildExportFile(path) {
+    var input = `./src/contexts/${path}`;
+    var output = `./export/.build/${path}`;
+
+    return {
+        input: `${input}.js`,
+        output: { file: `${output}.js` },
+    };
+}
+
+function extractFiles(config, buildFile) {
+    var files = [];
+    config.contexts.forEach((context) => {
+        var contextPath = `${context.id}`;
+        files = [...files, buildFile(`${contextPath}/context`)];
+        files.push(buildFile(`${contextPath}/context`));
+        context.variables.forEach((concept) => {
+            var conceptPath = `${contextPath}/${concept.id}`;
+            concept.variants.forEach((variant) =>
+                files.push(buildFile(`${conceptPath}/${variant.id}`))
+            );
+        });
+    });
+    return files;
+}
+
+var files = extractFiles(config, buildServeFile);
+files.push(...extractFiles(config, buildExportFile));
+files.push({
+    input: `./src/local/catalyst-local.js`,
     output: {
-      file: `${output}.js`,
-      format: 'iife'
+        dir: `./serve`,
+        format: 'iife',
     },
     plugins: [
-      scss({
-        include: [`${input}.scss`],
-        output: `${output}.css`
-      })
-    ]
-  }
-}
+        copy({
+            targets: [{ src: './src/local/local-loader.js', dest: './serve' }],
+        }),
+        nodeResolve(),
+    ],
+});
 
-function extractFiles(config) {
-  var files = [];
-  config.contexts.forEach(context=>{
-    var contextPath = `${context.id}`;
-    files = [...files, buildFile(`${contextPath}/context`)]
-    files.push(buildFile(`${contextPath}/context`))
-    context.variables.forEach(concept=>{
-      var conceptPath = `${contextPath}/${concept.id}`
-      concept.variants.forEach(variant=>
-        files.push(buildFile(`${conceptPath}/${variant.id}`))
-      );
-    })
-  })
-  return files;
-}
-
-var files = extractFiles(evolvConfig);
-files.push({
-  input: `./harness/bootstrap.js`,
-  output: {
-    file: `./dist/bootstrap.js`,
-    format: 'iife'
-  },
-  plugins: [
-  ]
-})
-
+// console.info('config', JSON.stringify(files));
 export default files;
-// export default files
