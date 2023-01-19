@@ -1,1 +1,1 @@
-import { rule, $, $$ } from '../setup.js'
+import {  } from '../setup.js'
