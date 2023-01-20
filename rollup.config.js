@@ -29,15 +29,17 @@ function extractFiles(config, buildFile) {
     var files = [];
     config.contexts.forEach((context) => {
         var contextPath = `${context.id}`;
-        files = [...files, buildFile(`${contextPath}/context`)];
         files.push(buildFile(`${contextPath}/context`));
         context.variables.forEach((concept) => {
             var conceptPath = `${contextPath}/${concept.id}`;
             concept.variants.forEach((variant) =>
-                files.push(buildFile(`${conceptPath}/${variant.id}`))
+                files.push(
+                    buildFile(`${conceptPath}/${concept.id}${variant.id}`)
+                )
             );
         });
     });
+
     return files;
 }
 

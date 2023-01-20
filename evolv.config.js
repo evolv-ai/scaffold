@@ -6,7 +6,7 @@ export default {
             display_name: 'Home page',
             referenceUrls: ['https://www.verizon.com'],
             condition: {
-                'web.url': '',
+                'web.url': '/',
             },
             variables: [
                 {

@@ -1,19 +1,22 @@
-import Base64 from 'base-64';
-import fs from 'fs';
-import path from 'path';
-import yaml from 'js-yaml';
-import { URL } from 'url';
-import config from '../evolv.config.js';
+const Base64 = require('base-64');
+const fs = require('fs');
+const path = require('path');
+const yaml = require('js-yaml');
+const { URL } = require('url');
 
 //update yml with config updates
 try {
+    var config = loadConfig(absolutePath('./src/config/evolv-config.json'));
     var newModel = mergeToYaml(config);
-    const yamlPath = config.output || 'export/exp.yml';
-    console.log('export', yamlPath);
-    saveYaml(newModel, yamlPath);
-} catch (e) {
-    console.info('error:', e);
-}
+    var aaPath =
+        path.dirname(config.output) +
+        '/' +
+        path.basename(config.output, '.yml') +
+        '-aa.yml';
+    console.log('export', aaPath);
+
+    saveYaml(newModel, aaPath || 'export/exp-aa.yml');
+} catch (e) {}
 
 //support functions
 function absolutePath(path) {
@@ -23,11 +26,6 @@ function absolutePath(path) {
 function loadConfig(configPath) {
     return JSON.parse(fs.readFileSync(configPath, 'utf8'));
 }
-
-// function loadYaml(yamlPath){
-//   var ymlData = fs.readFileSync(yamlPath, 'utf-8')
-//   return yaml.load(ymlData);
-// }
 
 function saveYaml(yamlModel, yamlPath) {
     const newYmlContent = yaml.dump(yamlModel);
@@ -139,11 +137,11 @@ function buildPredicates(context, baseUrl) {
 
 function mergeContext(context, contextId, baseUrl) {
     var contextPath = `./export/.build/${context.id}/context`;
-    var jsAsset = fs.readFileSync(absolutePath(`${contextPath}.js`), 'utf8');
-    var cssPath = absolutePath(`${contextPath}.css`);
+    // var jsAsset = fs.readFileSync(absolutePath(`${contextPath}.js`), 'utf8');
+    // var cssPath = absolutePath(`${contextPath}.css`);
     var assets = {
-        javascript: jsAsset,
-        css: fs.existsSync(cssPath) ? fs.readFileSync(cssPath, 'utf8') : '',
+        javascript: '',
+        css: '',
     };
 
     var newContext = {};
@@ -223,10 +221,8 @@ function mergeVariant(variant, variantId) {
         var jsPath = absolutePath(`${variant.source}.js`);
         var cssPath = absolutePath(`${variant.source}.css`);
 
-        yamlValue._value.script = fs.readFileSync(jsPath, 'utf8');
-        yamlValue._value.styles = fs.existsSync(cssPath)
-            ? fs.readFileSync(cssPath, 'utf8')
-            : '';
+        yamlValue._value.script = '';
+        yamlValue._value.styles = '';
         yamlValue._value.type = variant.type || 'compound';
         yamlValue._value._metadata = variant.metadata || {};
     }

@@ -48,8 +48,8 @@ function makeProject(config) {
             makeVariableImportFiles(variableImportPath, context.id, cid);
             variable.variants.forEach((variant) => {
                 const vid = variant.id;
-                const variantPath = `${variablePath}/${vid}`;
-                const variantImportPath = `${variableImportPath}/_${vid}`;
+                const variantPath = `${variablePath}/${cid}${vid}`;
+                const variantImportPath = `${variableImportPath}/_${cid}${vid}`;
                 makeVariantFiles(variantPath, `${cid}${vid}`);
                 makeVariantImportFiles(variantImportPath, context.id, cid, vid);
             });
@@ -82,7 +82,7 @@ function getContextFiles(contextPath, context) {
                     variable.variants.forEach((variant) => {
                         const vid = variant.id;
                         importStatements.push(
-                            `import ${cid}${vid} from './_imports/_${cid}/_${vid}';`
+                            `import ${cid}${vid} from './_imports/_${cid}/_${cid}${vid}';`
                         );
                         variantDeclarations.push(
                             `rule.app.${cid}${vid} = ${cid}${vid};`
@@ -111,20 +111,13 @@ function getContextFiles(contextPath, context) {
             template: `${scriptTemplatePath}/context.scss`,
             postProcess: () => {
                 const importStatements = [];
-                // const variantDeclarations = [];
                 context.variables.forEach((variable) => {
                     const cid = variable.id;
                     variable.variants.forEach((variant) => {
                         const vid = variant.id;
                         importStatements.push(
-                            `@use '_imports/_${cid}/${vid}' as ${cid}${vid};`
+                            `@use '_imports/_${cid}/${cid}${vid}' as ${cid}${vid};`
                         );
-                        // variantDeclarations.push(
-                        //     `body.evolv-${context.id}-${cid}${vid} {\n` +
-                        //         `    @extend %${cid};\n` +
-                        //         `    @import '_imports/_${cid}/${vid} as ${cid}${vid}';\n` +
-                        //         '}\n'
-                        // );
                     });
                 });
                 replaceText(

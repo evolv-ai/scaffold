@@ -1,6 +1,6 @@
 {
-    "name": "scaffold-catalyst-deluxe",
-    "version": "1.0.0",
+    "name": "scaffold-catalyst",
+    "version": "0.2.0",
     "description": "",
     "main": "context.js",
     "scripts": {
@@ -8,12 +8,15 @@
         "del": "rm -rf ./serve ./export",
         "build:rollup": "rollup --config rollup.config.js",
         "build:sass": "sass ./src/contexts:./serve --no-source-map",
+        "copy:css": "rsync -a --include='*/' --include='*.css' --exclude='*' ./serve/ ./export/.build/",
         "export:yaml": "node ./scripts/export-yaml.js",
+        "export:aa": "node ./scripts/export-aa.js",
         "watch:rollup": "rollup --config rollup.config.js --watch",
         "watch:sass": "sass ./src/contexts:./serve --watch",
-        "watch:yaml": "nodemon --watch ./export/.build ./scripts/export-yaml.js",
+        "watch:css": "nodemon --quiet --watch ./serve -e css --exec 'npm run copy:css'",
+        "watch:yaml": "nodemon --quiet --watch ./export/.build ./scripts/export-yaml.js",
         "serve": "http-server ./serve --port 8080 --cors --silent",
-        "build": "npm-run-all -l -s del build:* export:yaml",
+        "build": "npm-run-all -l -s del build:* copy:css export:yaml",
         "start": "npm-run-all -ls -s del build:* -p watch:* serve"
     },
     "type": "module",
@@ -33,7 +36,6 @@
         "nodemon": "^2.0.20",
         "npm-run-all": "^4.1.5",
         "rollup-plugin-copy": "^3.4.0",
-        "rollup-plugin-json": "^4.0.0",
         "sass": "^1.54.3"
     }
 }
