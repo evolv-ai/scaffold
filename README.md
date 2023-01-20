@@ -60,12 +60,6 @@ Install from: https://chrome.google.com/webstore/detail/resource-override/pkoacg
 
 Add tab group url for the path you want to load the variants into. You can use either a base url (https://www.evolv.ai/**) or a specific path.
 
-#### Add Change Header Rule
-
-Use `Allow Outside Content` from the preset options and it should include two lines with:
-`Remove` `Content-Security-Policy` and
-`Remove` `X-Content-Security-Policy`
-
 #### Add Inject file rule
 
 Add an Inject file to your tab group and use the default `head` as the insertion point.
