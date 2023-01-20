@@ -1,9 +1,0 @@
-@use '../utils';
-@use '../_c1/c1';
-
-body.evolv-context1-c1v2 {
-    @extend %c1;
-
-    .evolv {
-    }
-}
