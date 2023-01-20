@@ -16,13 +16,13 @@ The `main` branch represents a plain version independent of tech stack. Each bra
 
 To start a new project in the `my-project` directory with the scaffold:
 
-`npx degit git@github.com:evolv-ai/scaffold.git@catalyst --mode=git my-project`
+`npx degit git@github.com:evolv-ai/scaffold.git@catalyst --mode=git new-project`
 
 ## Initialize project
 
 Then got into the folder:
 
-`cd my-project`
+`cd new-project`
 
 And then, run:
 
@@ -72,7 +72,7 @@ Add an Inject file to your tab group and use the default `head` as the insertion
 The following snippet should be used as the content.
 
 ```
-var variants = ['context1/c1/v1']; // Change context and variant names to fit your project
+var variants = ['context1/c1/c1v1']; // Change context and variant names to fit your project
 var port = '8080';
 
 var expScript = document.createElement('script');
@@ -83,7 +83,7 @@ expScript.setAttribute('port', port);
 document.head.appendChild(expScript);
 ```
 
-**Note**: The variants can be any combination where each variant string is specified by the following `<context id>/<concept id>/<variant id>`.
+**Note**: The variants can be any combination where each variant string is specified by the following `<context id>/<concept id>/<concept id><variant id>`.
 
 ## Build YAML file
 
