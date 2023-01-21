@@ -5,7 +5,7 @@ const contextsPath = `./src/contexts`;
 const scriptTemplatePath = `./scripts/templates`;
 
 function log() {
-    console.info('[init:project]', ...arguments);
+    console.log('\x1b[32m[scaffold]\x1b[0m', ...arguments);
 }
 
 try {
