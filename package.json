@@ -4,7 +4,7 @@
     "description": "",
     "main": "context.js",
     "scripts": {
-        "init:project": "node ./scripts/init-project.js",
+        "scaffold": "node ./scripts/init-project.js",
         "del": "rm -rf ./serve ./export",
         "build:rollup": "rollup --config rollup.config.js",
         "build:sass": "sass ./src/contexts:./serve --no-source-map",

@@ -20,15 +20,6 @@ try {
     console.log(e);
 }
 
-//support functions
-function absolutePath(path) {
-    return path;
-}
-
-// function loadConfig(configPath) {
-//     return JSON.parse(fs.readFileSync(configPath, 'utf8'));
-// }
-
 function saveYaml(yamlModel, yamlPath) {
     const newYmlContent = yaml.dump(yamlModel);
     const yamlDir = path.dirname(yamlPath);
