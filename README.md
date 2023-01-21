@@ -71,7 +71,7 @@ The following snippet should be used as the content.
 
 ```js
 (function () {
-    var variants = ['context1/c1/c1v1']; // Change context and variant names to fit your project
+    var variants = ['context1/c1/v1']; // Change context and variant names to fit your project
     var port = '8080';
 
     var script = document.createElement('script');
@@ -83,4 +83,4 @@ The following snippet should be used as the content.
 })()
 ```
 
-**Note**: The variants can be any combination where each variant string is specified by the following `<context id>/<concept id>/<concept id><variant id>`.
+**Note**: The variants can be any combination where each variant string is specified by the following `<context id>/<concept id>/<variant id>`.

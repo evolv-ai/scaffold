@@ -48,7 +48,7 @@ function makeProject(config) {
             makeVariableImportFiles(variableImportPath, context.id, cid);
             variable.variants.forEach((variant) => {
                 const vid = variant.id;
-                const variantPath = `${variablePath}/${cid}${vid}`;
+                const variantPath = `${variablePath}/${vid}`;
                 const variantImportPath = `${variableImportPath}/_${cid}${vid}`;
                 makeVariantFiles(variantPath, `${cid}${vid}`);
                 makeVariantImportFiles(variantImportPath, context.id, cid, vid);

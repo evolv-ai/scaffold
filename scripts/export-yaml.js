@@ -78,7 +78,7 @@ function mergeToYaml(config) {
             var variableId = `${contextId}_${variable.id}`;
             var basePath = `./export/.build/${context.id}/${variable.id}`;
             variable.variants.forEach(
-                (v) => (v.source = `${basePath}/${variable.id}${v.id}`)
+                (v) => (v.source = `${basePath}/${v.id}`)
             );
             var variants = [
                 generateControl(),
