@@ -16,7 +16,7 @@
         "watch:css": "nodemon --quiet --watch ./serve -e css --exec 'npm run copy:css'",
         "watch:yaml": "nodemon --quiet --watch ./export/.build ./scripts/export-yaml.js",
         "serve": "http-server ./serve --port 8080 --cors --silent",
-        "build": "npm-run-all -l -s del build:* copy:css export:yaml",
+        "build": "npm-run-all -l -s del build:* copy:css export:*",
         "start": "npm-run-all -ls -s del build:* -p watch:* serve"
     },
     "type": "module",
