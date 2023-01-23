@@ -8,7 +8,7 @@ __variantDeclarations__
 if (window.evolv.client) {
     window.evolv.client
         .getActiveKeys('web.__contextId__')
-        .then((keys) => (rule.id = '__contextId__'));
+        .then(() => (rule.id = '__contextId__'));
 }
 
 instrumentPage();
