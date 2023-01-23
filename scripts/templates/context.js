@@ -2,9 +2,13 @@ import { rule, $, $$, $i, store, app, log } from './_imports/_setup.js';
 import instrumentPage from './_imports/_instrument.js';
 __variantImports__
 
-// Uncomment the line below in production to enable SPA handling
-// rule.id = '__contextId__';
-
 __variantDeclarations__
+
+// Prevents active key listener from disabling context in dev environment
+if (window.evolv.client) {
+    window.evolv.client
+        .getActiveKeys('web.__contextId__')
+        .then((keys) => (rule.id = '__contextId__'));
+}
 
 instrumentPage();
