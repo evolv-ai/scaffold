@@ -30,6 +30,9 @@ function extractFiles(config, buildFile) {
     config.contexts.forEach((context) => {
         var contextPath = `${context.id}`;
         files.push(buildFile(`${contextPath}/context`));
+
+        if (!context.variables) return;
+
         context.variables.forEach((concept) => {
             var conceptPath = `${contextPath}/${concept.id}`;
             concept.variants.forEach((variant) =>

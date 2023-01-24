@@ -5,6 +5,11 @@ import yaml from 'js-yaml';
 import { URL } from 'url';
 import config from '../evolv.config.js';
 
+Object.prototype.hasOwnProperty.call(RegExp, 'escape') ||
+    (RegExp.escape = function (e) {
+        return e.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+    });
+
 //update yml with config updates
 try {
     var newModel = mergeToYaml(config);
@@ -72,26 +77,30 @@ function mergeToYaml(config) {
     newYaml.web._config = { dependencies: '' };
 
     config.contexts.forEach((context) => {
-        var contextId = `${context.id}`;
+        var contextId = `${context.id}${config.version || ''}`;
         var newContext = mergeContext(context, contextId, config.baseUrl || '');
-        context.variables.forEach((variable) => {
-            var variableId = `${contextId}_${variable.id}`;
-            var basePath = `./export/.build/${context.id}/${variable.id}`;
-            variable.variants.forEach(
-                (v) => (v.source = `${basePath}/${v.id}`)
-            );
-            var variants = [
-                generateControl(),
-                ...variable.variants.map((variant) =>
-                    mergeVariant(variant, `${variableId}_${variant.id}`)
-                ),
-            ];
-            newContext[variableId] = mergeVariable(
-                variable,
-                variableId,
-                variants
-            );
-        });
+        if (context.variables) {
+            context.variables.forEach((variable) => {
+                var variableId = `${contextId}_${variable.id}`;
+                var basePath = `./export/.build/${context.id}/${variable.id}`;
+                if (variable.variants) {
+                    variable.variants.forEach(
+                        (v) => (v.source = `${basePath}/${v.id}`)
+                    );
+                    var variants = [
+                        generateControl(),
+                        ...variable.variants.map((variant) =>
+                            mergeVariant(variant, `${variableId}_${variant.id}`)
+                        ),
+                    ];
+                    newContext[variableId] = mergeVariable(
+                        variable,
+                        variableId,
+                        variants
+                    );
+                }
+            });
+        }
 
         newContext._expanded = true;
         newContext._description = context.description || '';
@@ -112,7 +121,7 @@ function getUrlCond(context) {
 function buildPredicates(context, baseUrl) {
     var url = new URL(baseUrl);
     var protocol = url.protocol.slice(0, -1);
-    var baseUrlValue = `${protocol}?://${url.host}/`;
+    var baseUrlValue = `${protocol}?:\\/\\/${RegExp.escape(url.host)}\\/`;
     var condition = context.condition;
 
     function buildRule(key, value, operator) {
@@ -168,7 +177,9 @@ function mergeContext(context, contextId, baseUrl) {
     newContext._config = {
         _id: contextId,
         _type: 'url',
-        _is_entry_point: true,
+        _is_entry_point: context.hasOwnProperty('is_entry_point')
+            ? context.is_entry_point
+            : true,
         _predicate: buildPredicates(context, baseUrl),
         _initializers: [
             { type: 'css', code: assets['css'] },
