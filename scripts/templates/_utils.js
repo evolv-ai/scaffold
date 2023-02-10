@@ -1,10 +1,12 @@
-import { $, $$, $i, rule, log } from './_setup';
+// import { $, $$, $i, rule, log } from './_setup';
 
 // Lit HTML transforms supporting augmented template literal syntax:
 // html`<p>It's the best</p>`
 
 function transform(exp) {
-    return Array.isArray(exp) ? exp.join('') : exp || '';
+    if (Array.isArray(exp)) return exp.join('');
+    if (typeof exp === 'number') return exp.toString();
+    return exp || '';
 }
 
 export function html(strings, ...exps) {
