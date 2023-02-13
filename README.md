@@ -19,7 +19,7 @@ The `main` branch represents a plain version independent of tech stack. Each bra
 To start a new project in the `new-project` directory:
 
 ```zsh
-npx degit git@github.com:evolv-ai/scaffold.git#catalyst --mode=git new-project
+npx degit git@github.com:evolv-ai/scaffold.git#catalyst new-project
 cd new-project
 npm install
 ```
