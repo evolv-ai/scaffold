@@ -1,5 +1,6 @@
 export default {
   name: 'Untitled Project',
+  version: 0,
   contexts: [
     {
       id: 'home',

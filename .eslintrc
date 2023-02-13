@@ -7,10 +7,9 @@
   "extends": ["airbnb-base", "prettier"],
   "overrides": [
     {
-      "files": ["scripts/*.js"],
+      "files": ["scripts/*.js", "src/local/*.js"],
       "rules": {
-        "no-console": ["off"],
-        "import/no-extraneous-dependencies": ["off"]
+        "no-console": ["off"]
       }
     }
   ],
@@ -21,5 +20,5 @@
   "rules": {
     "import/extensions": ["error", "always"]
   },
-  "ignorePatterns": ["scripts/templates/*"]
+  "ignorePatterns": ["scripts/templates", "serve"]
 }

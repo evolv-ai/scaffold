@@ -26,7 +26,9 @@
     "start": "npm-run-all -l -s del build:* -p watch:* serve"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.20.2",
     "@evolv-delivery/catalyst": "^0.6.4",
+    "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "base-64": "^1.0.0",
@@ -34,7 +36,6 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-json-format": "^2.0.1",
     "http-server": "^14.1.1",
     "js-yaml": "^4.1.0",
     "nodemon": "^2.0.20",
