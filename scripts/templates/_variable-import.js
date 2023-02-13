@@ -10,5 +10,5 @@
 // import { html } from '../_utils.js';
 
 export default () => {
-    // Common code shared among variants of variable __variableId__
+  // Common code shared among variants of variable __variableId__
 };
