@@ -9,7 +9,7 @@ import { URL } from 'url';
 import evolvConfig from '../evolv.config.js';
 
 function escapeRegEx(string) {
-  string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+  return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
 }
 
 function getUrlCond(context) {
