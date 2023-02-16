@@ -13,7 +13,7 @@
     "scaffold": "node ./scripts/scaffold.js",
     "del": "rm -rf ./serve ./export",
     "build:rollup": "rollup --config rollup.config.js",
-    "build:sass": "node ./scripts/sass-id.js && sass ./src/contexts:./serve --no-source-map",
+    "build:sass": "sass ./src/contexts:./serve --no-source-map",
     "copy:css": "rsync -a --include='*/' --include='*.css' --exclude='*' ./serve/ ./export/.build/",
     "export:yaml": "node ./scripts/export-yaml.js",
     "export:aa": "node ./scripts/export-aa.js",

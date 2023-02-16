@@ -1,13 +1,13 @@
+export const version = 1;
 export default {
   name: 'Untitled Project',
-  version: 0,
   contexts: [
     {
-      id: 'home',
+      id: 'vzhome', // Underscores are ok, no dashes
       display_name: 'Home page',
       referenceUrls: ['https://www.verizon.com'],
       condition: {
-        'web.url': '/',
+        'web.url': '/', // 'sales/next/expresscheckout.html'
       },
       variables: [
         {

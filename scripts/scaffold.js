@@ -3,10 +3,6 @@ import evolvConfig from '../evolv.config.js';
 
 const contextsPath = './src/contexts';
 const scriptTemplatePath = './scripts/templates';
-const version =
-  typeof evolvConfig.version === 'number'
-    ? evolvConfig.version.toString()
-    : evolvConfig.version || '';
 
 function log(...args) {
   console.log('\x1b[32m[scaffold]\x1b[0m', ...args);
@@ -55,7 +51,6 @@ function getContextFiles(contextPath, context) {
           importStatements.join('\n'),
         );
         replaceText(`${contextPath}/context.js`, '__contextId__', context.id);
-        replaceText(`${contextPath}/context.js`, '__version__', version);
         replaceText(
           `${contextPath}/context.js`,
           '__variantDeclarations__',
@@ -169,6 +164,7 @@ function getVariantImportFiles(
       file: `${variantImportPath}.scss`,
       template: `${scriptTemplatePath}/_variant-import.scss`,
       postProcess: () => {
+        replaceText(`${variantImportPath}.scss`, '__contextId__', contextId);
         replaceText(`${variantImportPath}.scss`, '__variableId__', variableId);
         replaceText(`${variantImportPath}.scss`, '__variantId__', variantId);
       },

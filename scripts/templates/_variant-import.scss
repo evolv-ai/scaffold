@@ -1,8 +1,8 @@
-@use '../id' as context;
+// @use '../id' as context;
 @use '../utils';
 @use '../___variableId__/__variableId__';
 
-body.evolv-#{context.$id}-__variableId____variantId__ {
+body.evolv-__contextId__-__variableId____variantId__ {
   @extend %__variableId__;
 
   .evolv {
