@@ -7,6 +7,7 @@ import path from 'path';
 import yaml from 'js-yaml';
 import { URL } from 'url';
 import evolvConfig from '../evolv.config.js';
+import { version } from '../evolv.config.js';
 
 function escapeRegEx(string) {
   return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
@@ -180,7 +181,7 @@ function mergeToYaml(config) {
   newYaml.web._config = { dependencies: '' };
 
   config.contexts.forEach((context) => {
-    const contextId = `${context.id}${config.version || ''}`;
+    const contextId = `${context.id}${version || ''}`;
     const newContext = mergeContext(context, contextId, config.baseUrl || '');
     if (context.variables) {
       context.variables.forEach((variable, variableIndex) => {

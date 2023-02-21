@@ -1,6 +1,6 @@
 {
   "name": "scaffold-catalyst",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "",
   "license": "ISC",
   "author": "richardcowin",
@@ -20,7 +20,7 @@
     "watch:rollup": "rollup --config rollup.config.js --watch",
     "watch:sass": "sass ./src/contexts:./serve --watch",
     "watch:css": "nodemon --quiet --watch ./serve --ext css --exec 'npm run copy:css'",
-    "watch:yaml": "nodemon --quiet --watch ./export/.build --ext css,js ./scripts/export-yaml.js",
+    "watch:yaml": "nodemon --quiet --delay 2 --watch ./export/.build --ext css,js ./scripts/export-yaml.js",
     "serve": "http-server ./serve --port 8080 --cors --silent",
     "build": "npm-run-all -l -s del build:* copy:css export:*",
     "start": "npm-run-all -l -s del build:* -p watch:* serve"
