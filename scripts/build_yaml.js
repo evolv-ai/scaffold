@@ -4,15 +4,18 @@ const path = require('path')
 const yaml = require('js-yaml');
 const { URL } = require('url');
 
+processConfig('./evolv-config.json', './dist/exp.yml')
 
 //update yml with config updates
-try {
-  var config = loadConfig(absolutePath('./evolv-config.json'));
-  var newModel = mergeToYaml(config)
-  saveYaml(newModel, config.output || 'dist/exp.yml')
-  console.info('merge completed');
-} catch (e) {
-  console.info('error:', e)
+function processConfig(input, output){
+  try {
+    var config = loadConfig(absolutePath(input));
+    var newModel = mergeToYaml(config)
+    saveYaml(newModel, config.output || output)
+    console.info('merge completed');
+  } catch (e) {
+    console.info('error:', e)
+  }
 }
 
 
@@ -28,7 +31,7 @@ function loadConfig(configPath) {
 // function loadYaml(yamlPath){
 //   var ymlData = fs.readFileSync(yamlPath, 'utf-8')
 //   return yaml.load(ymlData);
-// }
+// } 
 
 function saveYaml(yamlModel, yamlPath) {
   const newYmlContent = yaml.dump(yamlModel)
@@ -52,13 +55,14 @@ function generatePreviewLinks(config) {
 function mergeToYaml(config) {
   var newYaml = {};
 
-  newYaml._version = '1';
+  newYaml._version = '3';
   newYaml._name = config.name || '';
   newYaml._metadata = {
     base_url: config.baseUrl || config.contexts[0].reference_urls,
     controlsEditable: false,
     treeShakeDependencies: false,
     enableSass: false,
+    enableVisualEditor: false,
     dependencies: [],
   };
 
@@ -67,16 +71,16 @@ function mergeToYaml(config) {
   newYaml.web._config = { dependencies: '' };
 
   config.contexts.forEach(context => {
-    var contextId = `${config.id}_${context.id}`
+    var contextId = context.legacyId  || `${config.id}_${context.id}`
     var newContext = mergeContext(context, contextId, config.baseUrl || '');
     context.variables.forEach(variable => {
       var variableId = `${contextId}_${variable.id}`
       var basePath = `./dist/${context.id}/${variable.id}`;
       variable.variants.forEach(v => v.source = `${basePath}/${v.id}`)
-      var variants = [generateControl(), ...variable.variants.map(variant =>
-        mergeVariant(variant, `${variableId}_${variant.id}`)
+      var variants = [generateControl(variable), ...variable.variants.map(variant =>
+        mergeVariant(variant, variant.legacyId || `${variableId}_${variant.id}`)
       )];
-      newContext[variableId] = mergeVariable(variable, variableId, variants);;
+      newContext[variable.legacyId || variableId] = mergeVariable(variable, variable.legacyId || variableId, variants);;
     })
 
     newContext._expanded = true;
@@ -142,6 +146,9 @@ function mergeContext(context, contextId, baseUrl) {
   newContext._display_name = context.display_name || '';
 
   newContext._metadata = {
+    script: assets.javascript,
+    styles: assets.css,
+    components: [],
     page_def: {
       domain_match_type: 'full',
       path_match_type: 'regex',
@@ -149,8 +156,8 @@ function mergeContext(context, contextId, baseUrl) {
       _pattern: getUrlCond(context),
       is_entry_context: true
     },
-    script: assets.javascript,
-    styles: assets.css
+    timing: 'immediate',
+    timingSelectors: []
   }
 
   newContext._disable = false;
@@ -173,14 +180,17 @@ function mergeContext(context, contextId, baseUrl) {
 
 function mergeVariable(variable, variableId, values) {
   var newVariable = {};
-  newVariable._values = values;
-
   newVariable._id = variableId;
   newVariable._display_name = variable.display_name || '';
-  newVariable._metadata = {};
+  newVariable._metadata = {
+    script: "",
+    styles: "",
+    components: [],
+    idea: null
+  };
   newVariable._disable = variable.disable || false;
+  newVariable._values = values;
   newVariable._description = variable.description || '';
-  newVariable._expanded = true
   newVariable._config = {
     _id: variableId,
     _type: 'manual',
@@ -192,16 +202,34 @@ function mergeVariable(variable, variableId, values) {
   return newVariable;
 }
 
-function generateControl() {
+function generateControl(variable) {
   var yamlValue = {};
   console.info('merging control', yamlValue)
+  yamlValue._reference_id = '';
   yamlValue._display_name = 'Control';
-
-  yamlValue._metadata = { uses_noop: true, generated_control: true }
-  yamlValue._value = { type: 'noop' };
+  yamlValue._metadata = {
+    script: '',
+    styles: '',
+    components: '',
+    idea: '',
+    generated_control: true 
+  }
+  yamlValue._value = {
+    id: variable.controlId || '',
+    type: 'compound',
+    _metadata: {},
+    script: "",
+    styles: "",
+    timing: 'immediate',
+    timingSelectors: []
+  };
   yamlValue._disable = false;
   yamlValue._screenshots = [];
   return yamlValue
+}
+
+function legacyScript(script){
+  return script.slice(0,-1);
 }
 
 function mergeVariant(variant, variantId) {
@@ -211,23 +239,26 @@ function mergeVariant(variant, variantId) {
 
   yamlValue._reference_id = variantId;
   yamlValue._display_name = variant.display_name || '';
-
-  yamlValue._value = { id: variantId };
+  yamlValue._metadata = {},
+  yamlValue._value = { 
+    id: variantId
+  };
 
   if (variant.source) {
     var jsPath = absolutePath(`${variant.source}.js`);
     var cssPath = absolutePath(`${variant.source}.css`);
+    var script = fs.readFileSync(jsPath, 'utf8');
 
-    yamlValue._value.script = fs.readFileSync(jsPath, 'utf8');
-    yamlValue._value.styles = (fs.existsSync(cssPath)) ? fs.readFileSync(cssPath, 'utf8') : '';
     yamlValue._value.type = variant.type || 'compound';
     yamlValue._value._metadata = variant.metadata || {};
+    yamlValue._value.script = !variant.prune ? script : legacyScript(script);
+    yamlValue._value.styles = (fs.existsSync(cssPath)) ? fs.readFileSync(cssPath, 'utf8') : '';
+    yamlValue._value.timing = 'immediate';
+    yamlValue._value.timingSelectors = [];
   }
 
-  yamlValue._disable = variant.disable || false;
-  yamlValue._metadata = variant.metadata || {};
   yamlValue._screenshots = [];
-
+  yamlValue._disable = variant.disable || false;
 
   return yamlValue;
 }

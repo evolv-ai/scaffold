@@ -60,10 +60,10 @@ function replaceText(filePath, tag, newText){
 }
 function getTopFiles(){
   return [
-    {
-      file: `${templatesPath}/html.js`,
-      template: `${scriptTemplatePath}/html.js`
-    }
+    // {
+    //   file: `${templatesPath}/html.js`,
+    //   template: `${scriptTemplatePath}/html.js`
+    // }
   ]
 };
 
@@ -81,10 +81,6 @@ function getContextFiles(contextPath){
       file: `${contextPath}/setup.js`,
       template: `${scriptTemplatePath}/setup.js`,
       postProcess: ()=> replaceText(`${contextPath}/setup.js`, '__sandbox__', config.id)
-    },
-    {
-      file: `${contextPath}/instrumentPage.js`,
-      template: `${scriptTemplatePath}/instrumentPage.js`,
     }
   ];
 }

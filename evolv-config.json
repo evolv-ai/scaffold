@@ -6,7 +6,7 @@
         "id": "p1",
         "display_name": "Page 1",
         "referenceUrls": [
-          "https://www.verizon.com/<path>"
+          "https://<domain>/<path>"
         ],
         "condition": {
           "web.url": "<path regex>"
@@ -25,5 +25,5 @@
         ]
     }
   ],
-  "baseUrl": "https://www.verizon.com/"
+  "baseUrl": "https://<domain>/"
 }
