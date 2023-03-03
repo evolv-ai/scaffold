@@ -4,7 +4,7 @@ const path = require('path')
 const yaml = require('js-yaml');
 const { URL } = require('url');
 
-processConfig('./evolv-config.json', 'dist/exp.yml')
+processConfig('./evolv-config.json', './dist/exp.yml')
 
 //update yml with config updates
 function processConfig(input, output){
@@ -31,7 +31,7 @@ function loadConfig(configPath) {
 // function loadYaml(yamlPath){
 //   var ymlData = fs.readFileSync(yamlPath, 'utf-8')
 //   return yaml.load(ymlData);
-// }
+// } 
 
 function saveYaml(yamlModel, yamlPath) {
   const newYmlContent = yaml.dump(yamlModel)
