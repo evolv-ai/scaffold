@@ -5,21 +5,16 @@ The `main` branch represents a plain version independent of tech stack. Each bra
 
 | Branch name   | Integration supports | Integration plugin Requirements                                     |
 | ------------- | -------------------- | ------------------------------------------------------------------- |
-| #lit          | Uses lit templating  | https://www.npmjs.com/package/@evolv-delivery/lit-harness           |
-| #mutate       | Uses mutate lib      | NA - Built in                                                       |
-| #mutate-lit   | Uses lit templating  | https://www.npmjs.com/package/@evolv-delivery/lit-harness           |
 | #catalyst     | Uses Catalyst        | https://www.npmjs.com/package/@evolv-delivery/catalyst              |
-| #catalyst-lit | Users Catalyst & lit | https://www.npmjs.com/package/@evolv-delivery/lit-harness<br>https://www.npmjs.com/package/@evolv-delivery/catalyst |
+
 
 
 ## Generating a project
 To start a new project named `myProject` with the scaffold, use the following command line for a tech specific branch (replace `lit` with your desired branch):
 
-```npx degit git@github.com:evolv-ai/scaffold.git#lit --mode=git myProject```
-
 Or, use the following command line for plain version:
 
-```npx degit git@github.com:evolv-ai/scaffold.git --mode=git myProject```
+```npx degit https://github.com/evolv-ai/scaffold.git --mode=git myProject```
 
 ## Initialize project
 Then got into the folder:
