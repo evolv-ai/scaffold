@@ -1,6 +1,7 @@
 import copy from 'rollup-plugin-copy';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { babel } from '@rollup/plugin-babel';
+import terser from '@rollup/plugin-terser';
 import evolvConfig from './evolv.config.js';
 
 function buildServeFile(path) {
@@ -28,6 +29,7 @@ function buildExportFile(path) {
         babelHelpers: 'bundled',
         presets: ['@babel/preset-env'],
       }),
+      terser(),
     ],
   };
 }
