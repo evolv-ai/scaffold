@@ -1,6 +1,6 @@
 {
   "name": "scaffold-catalyst",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "",
   "license": "ISC",
   "author": "richardcowin",
@@ -13,13 +13,13 @@
     "scaffold": "node ./scripts/scaffold.js",
     "del": "rm -rf ./serve ./export",
     "build:rollup": "rollup --config rollup.config.js",
-    "build:sass": "sass ./src/contexts:./serve --no-source-map",
+    "build:sass": "sass ./src/contexts:./serve --no-source-map --style compressed",
     "copy:css": "rsync -a --include='*/' --include='*.css' --exclude='*' ./serve/ ./export/.build/",
     "export:yaml": "node ./scripts/export-yaml.js",
     "export:aa": "node ./scripts/export-aa.js",
     "watch:rollup": "rollup --config rollup.config.js --watch",
-    "watch:sass": "sass ./src/contexts:./serve --watch",
-    "watch:css": "nodemon --quiet --watch ./serve --ext css --exec 'npm run copy:css'",
+    "watch:sass": "sass ./src/contexts:./serve --watch --style compressed",
+    "watch:css": "nodemon --quiet --delay 2 --watch ./serve --ext css --exec 'npm run copy:css'",
     "watch:yaml": "nodemon --quiet --delay 2 --watch ./export/.build --ext css,js ./scripts/export-yaml.js",
     "serve": "http-server ./serve --port 8080 --cors --silent",
     "build": "npm-run-all -l -s del build:* copy:css export:*",
@@ -27,10 +27,11 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
-    "@evolv-delivery/catalyst": "^0.6.4",
+    "@evolv-delivery/catalyst": "^0.6.12",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.4.0",
     "base-64": "^1.0.0",
     "eslint": "^8.32.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -44,5 +45,8 @@
     "rollup": "^3.13.0",
     "rollup-plugin-copy": "^3.4.0",
     "sass": "^1.54.3"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
   }
 }
