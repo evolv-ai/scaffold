@@ -24,6 +24,20 @@ export default {
             },
           ],
         },
+        {
+          id: 'c2',
+          display_name: '2 - Concept description',
+          variants: [
+            {
+              id: 'v1',
+              display_name: '2.1 - Variant description',
+            },
+            {
+              id: 'v2',
+              display_name: '2.2 - Variant description',
+            },
+          ],
+        },
       ],
     },
   ],

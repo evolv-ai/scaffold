@@ -1,6 +1,6 @@
 import {
-  rule,
-  $,
+  // rule,
+  // $,
   // $$,
   // $i
  } from './_setup.js';

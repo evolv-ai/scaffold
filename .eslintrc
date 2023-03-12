@@ -9,7 +9,9 @@
     {
       "files": ["scripts/*.js", "src/local/*.js"],
       "rules": {
-        "no-console": ["off"]
+        "no-console": ["off"],
+        "import/no-extraneous-dependencies": ["off"],
+        "no-underscore-dangle": ["off"]
       }
     }
   ],

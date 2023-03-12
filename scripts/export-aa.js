@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 
 import Base64 from 'base-64';
@@ -6,8 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 import { URL } from 'url';
-import evolvConfig from '../evolv.config.js';
-import { version } from '../evolv.config.js';
+import evolvConfig, { version } from '../evolv.config.js';
 
 function escapeRegEx(string) {
   return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');

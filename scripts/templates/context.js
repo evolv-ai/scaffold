@@ -5,8 +5,7 @@ __variantImports__
 
 __variantDeclarations__
 
-// Uncomment the following to enable active key listening for SPA handling.
-// For local development you can do this once the A/A test is running
-// rule.id = `__contextId__${version}`
+// Note: SPA handling does not work properly in a local dev environment
+rule.id = `__contextId__${version}`
 
 instrumentPage();

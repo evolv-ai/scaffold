@@ -1,18 +1,18 @@
 import fs from 'fs';
+import PromptSync from 'prompt-sync';
 import evolvConfig from '../evolv.config.js';
+
+function prompt(string) {
+  const p = PromptSync();
+  const result = p(`\x1b[32m[scaffold]\x1b[0m ${string}`);
+  return result;
+}
 
 const contextsPath = './src/contexts';
 const scriptTemplatePath = './scripts/templates';
 
 function log(...args) {
   console.log('\x1b[32m[scaffold]\x1b[0m', ...args);
-}
-
-function isEmpty(directory) {
-  const files = fs.readdirSync(directory);
-  if (files && !files.length) return true;
-
-  return false;
 }
 
 function replaceText(filePath, tag, newText) {
@@ -35,7 +35,7 @@ function getContextFiles(contextPath, context) {
       postProcess: () => {
         const importStatements = [];
         const variantDeclarations = [];
-        context.variables.forEach((variable) => {
+        context.variables?.forEach((variable) => {
           const cid = variable.id;
           variable.variants.forEach((variant) => {
             const vid = variant.id;
@@ -63,13 +63,12 @@ function getContextFiles(contextPath, context) {
       template: `${scriptTemplatePath}/context.scss`,
       postProcess: () => {
         const importStatements = [];
-        context.variables.forEach((variable) => {
+        context.variables?.forEach((variable) => {
           const cid = variable.id;
+          importStatements.push(`@use '_imports/_${cid}/${cid}';`);
           variable.variants.forEach((variant) => {
             const vid = variant.id;
-            importStatements.push(
-              `@use '_imports/_${cid}/${cid}${vid}' as ${cid}${vid};`,
-            );
+            importStatements.push(`@use '_imports/_${cid}/${cid}${vid}';`);
           });
         });
         replaceText(
@@ -120,12 +119,18 @@ function getVariableImportFiles(variableImportPath, contextId, variableId) {
     {
       file: `${variableImportPath}/_${variableId}.scss`,
       template: `${scriptTemplatePath}/_variable-import.scss`,
-      postProcess: () =>
+      postProcess: () => {
+        replaceText(
+          `${variableImportPath}/_${variableId}.scss`,
+          '__contextId__',
+          contextId,
+        );
         replaceText(
           `${variableImportPath}/_${variableId}.scss`,
           '__variableId__',
           variableId,
-        ),
+        );
+      },
     },
   ];
 }
@@ -233,27 +238,137 @@ function makeVariantImportFiles(
   ).forEach(makeFile);
 }
 
-function makeProject(config) {
-  if (fs.existsSync(contextsPath) && !isEmpty(contextsPath)) {
-    throw new Error(`directory '${contextsPath}' has contents`);
-  }
+function getIds(config) {
+  const ids = {};
 
-  makeFolder(contextsPath);
   config.contexts.forEach((context) => {
     const contextPath = `${contextsPath}/${context.id}`;
-    makeContextFiles(contextPath, context);
-    context.variables.forEach((variable) => {
+    ids[context.id] = {};
+    ids[context.id].exists = fs.existsSync(contextPath);
+    if (context.variables) ids[context.id].variables = {};
+
+    context.variables?.forEach((variable) => {
+      const variablePath = `${contextPath}/${variable.id}`;
+      ids[context.id].variables[variable.id] = {};
+      ids[context.id].variables[variable.id].exists =
+        fs.existsSync(variablePath);
+      if (variable.variants)
+        ids[context.id].variables[variable.id].variants = {};
+
+      variable.variants?.forEach((variant) => {
+        const variantPath = `${variablePath}/${variant.id}.js`;
+        ids[context.id].variables[variable.id].variants[variant.id] = {};
+        ids[context.id].variables[variable.id].variants[variant.id].exists =
+          fs.existsSync(variantPath);
+      });
+    });
+  });
+
+  return ids;
+}
+
+function listIds(ids, exists) {
+  Object.keys(ids).forEach((contextId) => {
+    if (ids[contextId].exists === exists) log('context: ', contextId);
+    if (!ids[contextId].variables) return;
+    Object.keys(ids[contextId].variables)?.forEach((variableId) => {
+      if (ids[contextId].variables[variableId].exists === exists)
+        log('variable:', contextId, variableId);
+      Object.keys(ids[contextId].variables[variableId].variants)?.forEach(
+        (variantId) => {
+          if (
+            ids[contextId].variables[variableId].variants[variantId].exists ===
+            exists
+          )
+            log('variant: ', contextId, `${variableId}${variantId}`);
+        },
+      );
+    });
+  });
+}
+
+function processIds(ids, callback) {
+  const result = [];
+  Object.keys(ids).forEach((contextId) => {
+    const contextResult = callback(contextId, ids[contextId]);
+    if (contextResult) result.push();
+    if (!ids[contextId].variables) return;
+
+    Object.keys(ids[contextId].variables)?.forEach((variableId) => {
+      const variableResult = callback(
+        variableId,
+        ids[contextId].variables[variableId],
+      );
+      if (variableResult) result.push(variableResult);
+
+      Object.keys(ids[contextId].variables[variableId].variants)?.forEach(
+        (variantId) => {
+          const variantResult = callback(
+            variantId,
+            ids[contextId].variables[variableId].variants[variantId],
+          );
+
+          if (variantResult) result.push(variantResult);
+        },
+      );
+    });
+  });
+  return result;
+}
+
+function makeProject(config) {
+  const ids = getIds(config);
+  const existingIds = processIds(ids, (id, node) => (node.exists ? id : null));
+
+  if (!existingIds.length) log('no project files were found');
+  else log('files for the following project ids have been found:');
+  listIds(ids, true);
+
+  const newNodes = processIds(ids, (id, node) => (!node.exists ? id : null));
+  if (!newNodes.length) {
+    log();
+    log('there are no new project files to create');
+    return;
+  }
+
+  log();
+  log('scaffold will create project files for the following:');
+  listIds(ids, false);
+  log();
+  const result = prompt('would you like to proceed Y/n? ');
+  if (result.toUpperCase() === 'N') return;
+
+  makeFolder(contextsPath);
+
+  log();
+  config.contexts.forEach((context) => {
+    const contextPath = `${contextsPath}/${context.id}`;
+
+    if (!ids[context.id].exists) {
+      log('make context files:', context.id);
+      makeContextFiles(contextPath, context);
+    }
+    context.variables?.forEach((variable) => {
       const cid = variable.id;
       const variablePath = `${contextPath}/${cid}`;
       const variableImportPath = `${contextPath}/_imports/_${cid}`;
-      makeVariableFiles(variablePath);
-      makeVariableImportFiles(variableImportPath, context.id, cid);
-      variable.variants.forEach((variant) => {
+      if (!ids[context.id].variables[variable.id].exists) {
+        log('make variable files:', context.id, variable.id);
+        makeVariableFiles(variablePath);
+        makeVariableImportFiles(variableImportPath, context.id, cid);
+      }
+      variable.variants?.forEach((variant) => {
         const vid = variant.id;
         const variantPath = `${variablePath}/${vid}`;
         const variantImportPath = `${variableImportPath}/_${cid}${vid}`;
-        makeVariantFiles(variantPath, `${cid}${vid}`);
-        makeVariantImportFiles(variantImportPath, context.id, cid, vid);
+
+        if (
+          !ids[context.id].variables[variable.id].variants[variant.id].exists
+        ) {
+          log('make variant files:', context.id, `${variable.id}${variant.id}`);
+          makeVariantFiles(variantPath, `${cid}${vid}`);
+          makeVariantImportFiles(variantImportPath, context.id, cid, vid);
+        }
       });
     });
   });
@@ -261,7 +376,6 @@ function makeProject(config) {
 
 try {
   makeProject(evolvConfig);
-  // log('project created');
 } catch (e) {
   log('error:', e);
 }
