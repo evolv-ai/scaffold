@@ -33,6 +33,7 @@ Once you have your experiment outline specified, run the following to build your
 ```zsh
 npm run scaffold
 ```
+The `scaffold` script detects if any folders exist for your configuration and gives you option to generate any missing file structure. This allows you add contexts, variables, or variants at any time by updating `evolv.config.js` and rerunning the script.
 
 ### Build YAML
 
@@ -42,7 +43,7 @@ To export YAML without starting a dev server:
 npm run build
 ```
 
-Your YAML file will be generated in the `./export` folder and the file name is specified in `evolv.config.js`.
+The build script will generate YAML file for your experiment and an A/A test in the `./export` folder and the file name is specified in `evolv.config.js`.
 
 ### Start Development Server
 
