@@ -7,6 +7,7 @@
     "rollup:build": "rollup --config rollup.config.js",
     "rollup:watch": "rollup --config rollup.config.js --watch",
     "server:dev": "pushd dist; python3 -m http.server 8080; popd",
+    "yaml:deconstruct": "node ./scripts/deconstruct_yaml.js",
     "yaml:build": "node ./scripts/build_yaml.js",
     "folder:build": "node ./scripts/build_structure.js",
     "init:build": "node ./scripts/build_init.js",
