@@ -126,17 +126,12 @@ function buildPredicates(context, baseUrl) {
 
 function mergeContext(context, contextId, baseUrl) {
   var closingLength = 7;
-  var contextSuffix = `
-    rule.isActive = function(){
-      return [...document.querySelector('html').classList].includes("evolv_web_${context.id}")
-    };
-  `;
   var contextPath = `./dist/${context.id}/context`;
 
   var jsAsset = fs.readFileSync(absolutePath(`${contextPath}.js`), 'utf8')
   var cssPath = absolutePath(`${contextPath}.css`);
   var assets = {
-    javascript: jsAsset.slice(0, -closingLength) + contextSuffix + jsAsset.slice(-closingLength),
+    javascript: jsAsset.slice(0, -closingLength) + jsAsset.slice(-closingLength),
     css: (fs.existsSync(cssPath)) ? fs.readFileSync(cssPath, 'utf8') : ''
   }
 
