@@ -10,7 +10,7 @@ import {
 // import { html } from '../_utils.js';
 
 export default () => {
-  rule.track('c1');
+  rule.track('__variableId__');
 
   // Common code shared among variants of variable __variableId__
 };
