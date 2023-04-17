@@ -4,20 +4,20 @@ const path = require('path')
 const yaml = require('js-yaml');
 const { URL } = require('url');
 
-processConfig('./evolv-config.json', './dist/exp.yml')
+processConfig('./evolv-config.json')
 
 //update yml with config updates
-function processConfig(input, output){
+function processConfig(input){
   try {
     var config = loadConfig(absolutePath(input));
     var newModel = mergeToYaml(config)
+    var output = config.targetYAML || './dist/exp.yml';
     saveYaml(newModel, config.output || output)
     console.info('merge completed');
   } catch (e) {
     console.info('error:', e)
   }
 }
-
 
 //support functions
 function absolutePath(path) {
@@ -126,11 +126,7 @@ function buildPredicates(context, baseUrl) {
 
 function mergeContext(context, contextId, baseUrl) {
   var closingLength = 7;
-  var contextSuffix = `
-    rule.isActive = function(){
-      return [...document.querySelector('html').classList].includes("evolv_web_${context.id}")
-    };
-  `;
+  var contextSuffix = ``;
   var contextPath = `./dist/${context.id}/context`;
 
   var jsAsset = fs.readFileSync(absolutePath(`${contextPath}.js`), 'utf8')
@@ -150,7 +146,8 @@ function mergeContext(context, contextId, baseUrl) {
     styles: assets.css,
     components: [],
     page_def: {
-      domain_match_type: 'full',
+      domain_match_type: (context.domainMatch === undefined
+         ?'full' :(context.domainMatch ?'full' :'all')),
       path_match_type: 'regex',
       reference_urls: context.referenceUrls,
       _pattern: getUrlCond(context),
