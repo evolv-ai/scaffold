@@ -5,6 +5,10 @@ const yaml = require('js-yaml');
 const { URL } = require('url');
 const { generateFolders } = require('./folderStructure.js'); 
 
+const fullPath = path.resolve();
+const currentFolder = fullPath.match(/([^\/]*)\/*$/)[0];
+const yamlName = path.resolve(`../${currentFolder}.yml`);
+
 const Default = {
     condition: '<path regex>',
     baseUrl: 'https://<domain>/',
@@ -14,12 +18,10 @@ const Default = {
     pageName: 'Page 1'
 };
 
-processConfig('./legacy.yml', './evolv-config.json')
-
+processConfig('./legacy.yml', yamlName)
 
 //update evolv config with legacy 
 function processConfig(yaml, json){
-
   try {
     var legacy = loadYaml(yaml); 
     var config = loadConfig(absolutePath(json));
