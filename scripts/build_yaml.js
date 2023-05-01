@@ -19,6 +19,7 @@ function processConfig(input){
   }
 }
 
+
 //support functions
 function absolutePath(path) {
   return path;
@@ -166,7 +167,9 @@ function mergeContext(context, contextId, baseUrl) {
     _predicate: buildPredicates(context, baseUrl),
     _initializers: [
       { type: 'css', code: assets['css'] },
-      { type: 'javascript', code: assets['javascript'] }
+      { type: 'javascript', code: assets['javascript'] ,
+        timing: 'immediate', timingSelectors: []
+      },
     ]
   };
 
