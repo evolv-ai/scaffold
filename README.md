@@ -1,14 +1,6 @@
 # scaffold
 Scaffolding for developing and building an experiment using rollup
 
-The `main` branch represents a plain version independent of tech stack. Each branch below provides a scaffold for specific frameworks and integrations.
-
-| Branch name   | Integration supports | Integration plugin Requirements                                     |
-| ------------- | -------------------- | ------------------------------------------------------------------- |
-| #catalyst     | Uses Catalyst        | https://www.npmjs.com/package/@evolv-delivery/catalyst              |
-
-
-
 ## Generating a project
 To start a new project named `myProject` with the scaffold, use the following command line for a tech specific branch (replace `lit` with your desired branch):
 
