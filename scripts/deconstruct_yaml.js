@@ -18,7 +18,7 @@ const Default = {
     pageName: 'Page 1'
 };
 
-processConfig('./legacy.yml', yamlName)
+processConfig('./legacy.yml', process.argv[0] || yamlName)
 
 //update evolv config with legacy 
 function processConfig(yaml, json){
